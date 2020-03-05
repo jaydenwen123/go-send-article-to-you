@@ -1,0 +1,8 @@
+{
+  "category_data_sources": [
+    {
+      "page_url": "http://blog.studygolang.com/",
+      "category_selector": ".primary-menu  a"
+    }
+  ]
+}
