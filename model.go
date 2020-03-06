@@ -11,6 +11,14 @@ import (
 type Category struct {
 	Title    string
 	LinkHref string
+	Articles []*Article
+}
+
+type Article struct {
+	Title       string
+	Url         string
+	Author      string
+	PublishDate string
 }
 
 //GetCategoryList 根据url爬取网页中的文章栏目链接
