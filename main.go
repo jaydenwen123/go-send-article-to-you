@@ -8,6 +8,8 @@ import (
 	"github.com/jordan-wright/email"
 	"github.com/robfig/cron/v3"
 	"net/smtp"
+	"strings"
+	"time"
 )
 
 //文章html的模板5
@@ -25,51 +27,68 @@ func init() {
 }
 
 func main() {
-	/*go startTimer()
+	categoryChan := make(chan *Category, 0)
+	go startTimer(categoryChan)
+	go downloadArticleInfo(categoryChan)
+	select {}
+}
+
+func downloadArticleInfo(categoryChan chan *Category) {
 	for _, item := range configInfo.CategoryDataSources {
 		list := GetCategoryList(item.PageURL, item.CategorySelector)
 		for _, category := range list {
-			logs.Debug("%+v", category)
-			ParseCategory(category)
-			util.Save2JsonFile(category, "data/"+category.Title+".json")
+			go func(c *Category) {
+				ParseCategory(c)
+				util.Save2JsonFile(c, "data/"+c.Title+".json")
+				if len(c.Articles) > 0 {
+					categoryChan <- c
+				}
+			}(category)
 		}
 		//栏目的每页超链接
 		//	http://blog.studygolang.com/category/package/+/page/2/
 		//每篇文章的超链接选择器
 		logs.Debug("the all category articles is parsed finish....")
 	}
-	*/
-	sendEmail()
 }
 
 //开启定时器
-func startTimer() {
+func startTimer(categoryChan chan *Category) {
 	// 通过定时任务发送邮件和微信消息
 	//六段式的cron表达式 second minute hour day month week year
 	c := cron.New(cron.WithSeconds())
-	c.AddFunc("0/2 * * * * *", func() {
-
+	c.AddFunc("0 */30 * * * *", func() {
+		//没有任务就阻塞
+		logs.Debug("now is ready to send go article list to your email......")
+		category := <-categoryChan
+		sendEmail(category)
+		logs.Debug("send go article list to your email finish.........")
 	})
-	c.AddFunc("0/5 * * * * *", func() {
-		fmt.Println("Every 5 second=====")
-	})
+	//c.AddFunc("0/5 * * * * *", func() {
+	//	fmt.Println("Every 5 second=====")
+	//})
 	c.Start()
 	//c.Stop()
 }
 
-func sendEmail() {
+func sendEmail(category *Category) {
 	e := email.NewEmail()
 	e.From = "wenxiaofei<2282186474@qq.com>"
 	//qffobjwhfbcmdhjj
 	//e.From = "wsm<1565507757@qq.com>"
 	e.To = []string{"2282186474@qq.com"}
 	e.Subject = "每日一发[go相关文章]"
-	//写html代码
-	filePath := "data/Go内部实现.json"
-	content := genSendContent(filePath)
+	//写html代码,从文件读
+	//filePath := "data/Go内部实现.json"
+	//content := genSendContentFromFile(filePath)
+	//	_, err := e.AttachFile(filePath)
+
+	//直接写内存中的
+	content := genSendContent(category)
 	e.HTML = []byte(content)
+	_, err := e.Attach(strings.NewReader(util.Obj2JsonStr(content)),
+		time.Now().Format("2006-01-02 15:05:06")+".json", "application/json")
 	//添加附件
-	_, err := e.AttachFile(filePath)
 	if err != nil {
 		logs.Error("email add attach file error:%v", err)
 	}
@@ -84,12 +103,24 @@ func sendEmail() {
 }
 
 //genSendContent 生成要发送邮件的内容
-func genSendContent(filePath string) string {
+func genSendContentFromFile(filePath string) string {
 	category := &Category{}
 	util.LoadObjectFromJsonFile(filePath, category)
 	content := fmt.Sprintf(category_template, category.LinkHref, category.Title)
 	content += "<ol>"
 	for _, article := range category.Articles {
+		content += fmt.Sprintf(article_template, article.Url, article.Title)
+	}
+	content += "</ol>"
+	return content
+}
+
+//genSendContent 生成要发送邮件的内容
+func genSendContent(category *Category) string {
+	content := fmt.Sprintf(category_template, category.LinkHref, category.Title)
+	content += "<ol>"
+	for _, article := range category.Articles {
+
 		content += fmt.Sprintf(article_template, article.Url, article.Title)
 	}
 	content += "</ol>"
