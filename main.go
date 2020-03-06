@@ -16,11 +16,12 @@ import (
 var category_template = `<h4><a href="%s">%s</a></h4>`
 var article_template = `<li><a href="%s">%s</a><br></li>`
 
+const cronExp  = "0 */30 * * * *"
+
 //配置信息
 var configInfo = config.ConfigInfo{}
 
 func init() {
-
 	util.LoadObjectFromJsonFile("config/config.json", &configInfo)
 	logs.Debug("load the config info success...")
 	logs.Debug("the config info:%+v", configInfo)
@@ -57,7 +58,7 @@ func startTimer(categoryChan chan *Category) {
 	// 通过定时任务发送邮件和微信消息
 	//六段式的cron表达式 second minute hour day month week year
 	c := cron.New(cron.WithSeconds())
-	c.AddFunc("0 */30 * * * *", func() {
+	c.AddFunc(cronExp, func() {
 		//没有任务就阻塞
 		logs.Debug("now is ready to send go article list to your email......")
 		category := <-categoryChan
