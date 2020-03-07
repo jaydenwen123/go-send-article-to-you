@@ -9,6 +9,7 @@ import (
 	"github.com/jaydenwen123/go-util"
 	"strconv"
 	"strings"
+	"time"
 )
 
 //ParseCategory 解析栏目
@@ -33,6 +34,7 @@ func ParseCategory(category *Category, item *config.DataSource) {
 		} else {
 			category.Articles = articles
 		}
+		time.Sleep(50 * time.Millisecond)
 	}
 
 }

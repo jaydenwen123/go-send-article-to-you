@@ -33,7 +33,7 @@ func sendEmail(category *Category) {
 	}
 
 	err = e.Send("smtp.qq.com:25", smtp.PlainAuth("", "2282186474@qq.com",
-		"qffobjwhfbcmdhjj", "smtp.qq.com"))
+		"akpqrchsjvlvecdf", "smtp.qq.com"))
 	if err != nil {
 		logs.Error("send email error:%v", err)
 		return
