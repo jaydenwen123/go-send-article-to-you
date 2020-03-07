@@ -9,6 +9,5 @@ if [ `echo $psinfo |wc -l` == 1 ]; then
   kill -9 $pid
   echo "stop server finish."
 else
-  echo "ps monitor error..."
+  echo "current there is no server is running...."
 fi
-#awk -F " " ''
