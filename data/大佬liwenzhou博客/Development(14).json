@@ -1,13 +1,25 @@
 {
-  "Title": "Python(13)",
-  "LinkHref": "https://www.liwenzhou.com/categories/Python/",
+  "Title": "Development(14)",
+  "LinkHref": "https://www.liwenzhou.com/categories/Development/",
   "Articles": [
     {
-      "Title": "Python单元测试简介及Django中的单元测试",
-      "Url": "https://www.liwenzhou.com/posts/Python/python_unittest/",
+      "Title": "Django通过channels实现websocket",
+      "Url": "https://www.liwenzhou.com/posts/Django/django_websocket/",
       "Author": "",
-      "PublishDate": "2016年10月20日"
-    },x
+      "PublishDate": "2016年8月31日"
+    },
+    {
+      "Title": "Django contenttypes介绍及基本使用",
+      "Url": "https://www.liwenzhou.com/posts/Django/about_django_contenttypes/",
+      "Author": "",
+      "PublishDate": "2016年8月31日"
+    },
+    {
+      "Title": "Django框架中logging的使用",
+      "Url": "https://www.liwenzhou.com/posts/Django/logging_in_django/",
+      "Author": "",
+      "PublishDate": "2016年8月30日"
+    },
     {
       "Title": "装饰器进阶",
       "Url": "https://www.liwenzhou.com/posts/Python/advanced_decorator/",
@@ -63,22 +75,16 @@
       "PublishDate": "2016年6月22日"
     },
     {
-      "Title": "Python基础之闭包和装饰器",
-      "Url": "https://www.liwenzhou.com/posts/Python/about_decorator/",
+      "Title": "前端那些事儿",
+      "Url": "https://www.liwenzhou.com/posts/Frontend/about_frontend/",
       "Author": "",
-      "PublishDate": "2016年6月20日"
+      "PublishDate": "2015年7月20日"
     },
     {
-      "Title": "Python基础之函数和递归",
-      "Url": "https://www.liwenzhou.com/posts/Python/about_function/",
+      "Title": "Web基础之jQuery",
+      "Url": "https://www.liwenzhou.com/posts/Frontend/about_jQuery/",
       "Author": "",
-      "PublishDate": "2016年6月16日"
-    },
-    {
-      "Title": "Python基础之内置函数",
-      "Url": "https://www.liwenzhou.com/posts/Python/built-in_functions/",
-      "Author": "",
-      "PublishDate": "2016年6月13日"
+      "PublishDate": "2015年7月6日"
     }
   ]
 }

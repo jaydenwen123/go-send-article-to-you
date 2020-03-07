@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/jaydenwen123/go-send-article-to-you/config"
-	"github.com/jaydenwen123/go-util"
+	"path/filepath"
 	"sync"
 )
 
@@ -35,6 +35,9 @@ func main() {
 func downloadArticleInfo(categoryChan chan *Category) {
 	wg := sync.WaitGroup{}
 	for _, dataSource := range configInfo.DataSources {
+		/*if i != 0 {
+			continue
+		}*/
 		wg.Add(1)
 		fmt.Println("item info:", dataSource)
 		go func(ds *config.DataSource) {
@@ -49,10 +52,17 @@ func downloadArticleInfo(categoryChan chan *Category) {
 
 //handleDataSource 处理单个数据源
 func handleDataSource(item *config.DataSource) {
-	list := GetCategoryList(item.DataSrouceUrl, item.CategorySelector)
+	//1.初始化保存文件的目录
+	//2.保存文件
+	list:=GetCategoryList(item.DataSrouceUrl, item.CategorySelector)
+	dir := filepath.Join("data", item.DataSourceName)
+	err := util.InitDir(dir)
+	if err != nil {
+		logs.Error("init dir:<%s> error:%v", dir, err)
+	}
 	for _, category := range list {
 		ParseCategory(category, item)
-		util.Save2JsonFile(category, "data/"+category.Title+".json")
+		util.Save2JsonFile(category, filepath.Join(dir, category.Title+".json"))
 		//if len(c.Articles) > 0 {
 		//	categoryChan <- c
 		//}

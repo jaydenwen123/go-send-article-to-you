@@ -13,7 +13,7 @@ import (
 
 //ParseCategory 解析栏目
 func ParseCategory(category *Category, item *config.DataSource) {
-	logs.Debug("ParseCategory.....")
+	logs.Debug("ParseCategory=======>[%s].....",category.Title)
 	url := category.LinkHref
 	bdata, _ := util.Request(url)
 	reader, err := goquery.NewDocumentFromReader(bytes.NewReader(bdata))
@@ -67,7 +67,6 @@ func parseOnePage(category *Category, url string, item *config.ArticleConfig) []
 			author = util.TrimSpace(author)
 		}
 		if href != "" && len(href) > 0 {
-			logs.Debug("the article is saved...")
 			articles = append(articles, &Article{
 				Title:       title,
 				Url:         href,
@@ -96,12 +95,10 @@ func genAllCategoryPageUrl(category *Category, pageCount int, pageFormat string)
 //getPageCount 获取页数
 func getPageCount(reader *goquery.Document, pageSelector string) int64 {
 	//获取所有的页数的选择器
-	logs.Debug("~~~~the page selector:", pageSelector)
 	selection := reader.Find(pageSelector)
 	pageInfo := ""
 	if len(selection.Nodes) > 0 {
 		pageInfo = selection.Text()
-		logs.Debug("====the page INfo:", pageInfo)
 		count, err := strconv.ParseInt(pageInfo, 10, 32)
 		if err != nil {
 			logs.Error("get page count error:%v", err)

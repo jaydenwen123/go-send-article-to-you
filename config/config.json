@@ -1,8 +1,9 @@
 {
   "data_sources": [
     {
+      "data_source_name": "go语言博客",
       "data_srouce_url": "http://blog.studygolang.com/",
-      "category_selector": "ul.primary-menu  a",
+      "category_selector": "#categories-2 a",
       "page_count_selector": "div.wp-pagenavi > a:nth-last-child(2)",
       "page_format": "/page/%d/",
       "article_config": {
@@ -15,6 +16,7 @@
       }
     },
     {
+      "data_source_name": "大佬liwenzhou博客",
       "data_srouce_url": "https://www.liwenzhou.com/",
       "category_selector": "#secondary > section:nth-child(3) a",
       "page_count_selector": ".page-navigator > li:nth-last-child(2) > a",
@@ -24,6 +26,21 @@
         "article_link_selector": "header a",
         "has_date": true,
         "date_selector": "date.meta-date",
+        "has_author": false,
+        "author_selector": ""
+      }
+    },
+    {
+      "data_source_name": "大佬liang1101博客",
+      "data_srouce_url": "https://www.cnblogs.com/liang1101/tag/",
+      "category_selector": "table#MyTag1_dtTagList a",
+      "page_count_selector": "#myposts  div.pager  a:nth-last-child(2)",
+      "page_format": "default.html?page=%d",
+      "article_config": {
+        "article_block_selector": "div#myposts>div.PostList",
+        "article_link_selector": "div.postTitl2>a",
+        "has_date": true,
+        "date_selector": "div.postDesc2",
         "has_author": false,
         "author_selector": ""
       }

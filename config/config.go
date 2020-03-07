@@ -6,6 +6,7 @@ type ConfigInfo struct {
 
 //DataSource 数据源配置
 type DataSource struct {
+	DataSourceName string	`json:"data_source_name"`
 	DataSrouceUrl    string `json:"data_srouce_url"`
 	CategorySelector string `json:"category_selector"`
 	//解析页数的选择器
