@@ -5,13 +5,15 @@ import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/astaxie/beego/logs"
+	"github.com/jaydenwen123/go-send-article-to-you/config"
 	"github.com/jaydenwen123/go-util"
 	"strconv"
 	"strings"
 )
 
 //ParseCategory 解析栏目
-func ParseCategory(category *Category) {
+func ParseCategory(category *Category, item *config.DataSource) {
+	logs.Debug("ParseCategory.....")
 	url := category.LinkHref
 	bdata, _ := util.Request(url)
 	reader, err := goquery.NewDocumentFromReader(bytes.NewReader(bdata))
@@ -20,94 +22,92 @@ func ParseCategory(category *Category) {
 		return
 	}
 	//1.解析页数
-	pageInfo := getPageCount(reader)
-	logs.Debug("all page count:", pageInfo)
-	//2.解析文章链接
-	pageUrlList := genAllCategoryPageUrl(category, int(pageInfo))
+	pageInfo := getPageCount(reader, item.PageCountSelector)
+	logs.Debug("the category:<%s> has  page count:<%d>", category.Title, pageInfo)
+	//2.拼接所有的文章分页链接
+	pageUrlList := genAllCategoryPageUrl(category, int(pageInfo), item.PageFormat)
 	for _, url := range pageUrlList {
-		parseOnePage(category, url)
+		articles := parseOnePage(category, url, item.ArticleConfig)
+		if category.Articles != nil {
+			category.Articles = append(category.Articles, articles...)
+		} else {
+			category.Articles = articles
+		}
 	}
 
 }
 
 //parseOnePage 解析一页数据
-func parseOnePage(category *Category, url string) {
+func parseOnePage(category *Category, url string, item *config.ArticleConfig) []*Article {
 	articles := make([]*Article, 0)
 	//parse
 	bdata, _ := util.Request(url)
 	reader, err := goquery.NewDocumentFromReader(bytes.NewReader(bdata))
 	if err != nil {
 		logs.Error("parseOnePage ==>goquery.NewDocumentFromReader error:%v", err)
-		return
+		return nil
 	}
-	//main article header a
-	//标题
-	//#main article h2 a
+	//解析文章的标题、链接、日期、作者等信息
+	//解析文章
+	articleBlocks := reader.Find(item.ArticleBlockSelector)
 	var href, title, author, publishDate string
-	reader.Find("main article header a").Each(func(i int, selection *goquery.Selection) {
-		switch i % 4 {
-		case 0:
-			href, _ = selection.Attr("href")
-			title = selection.Text()
-		case 1:
-			publishDate = selection.Text()
-		case 2:
-			author = selection.Text()
-		case 3:
-			//评论，暂时不需要
+	articleBlocks.Each(func(i int, selection *goquery.Selection) {
+		//解析文章标题、链接
+		articleLink := selection.Find(item.ArticleLinkSelector)
+		href, _ = articleLink.Attr("href")
+		title = articleLink.Text()
+		if item.HasDate {
+			//解析文章日期
+			publishDate = selection.Find(item.DateSelector).Text()
+			publishDate = util.TrimSpace(publishDate)
 		}
-		if i%4 == 3 {
-			//超链接顺序
-			//1.文章链接地址
-			//2.时间
-			//3.作者
-			//4.评论
-			if href != "" && len(href) > 0 {
-				logs.Debug("the article is saved...")
-
-				articles = append(articles, &Article{
-					Title:       title,
-					Url:         href,
-					Author:      author,
-					PublishDate: publishDate,
-				})
-			}
+		if item.HasAuthor {
+			//解析文章作者
+			author = selection.Find(item.AuthorSelector).Text()
+			author = util.TrimSpace(author)
+		}
+		if href != "" && len(href) > 0 {
+			logs.Debug("the article is saved...")
+			articles = append(articles, &Article{
+				Title:       title,
+				Url:         href,
+				Author:      author,
+				PublishDate: publishDate,
+			})
 		}
 	})
-	if category.Articles != nil {
-		category.Articles = append(category.Articles, articles...)
-	} else {
-		category.Articles = articles
-	}
+	return articles
 }
 
-func genAllCategoryPageUrl(category *Category, pageCount int) []string {
+func genAllCategoryPageUrl(category *Category, pageCount int, pageFormat string) []string {
 	pageUrls := make([]string, 0)
 	pageUrls = append(pageUrls, category.LinkHref)
+
+	if !strings.HasPrefix(pageFormat, "/") {
+		pageFormat += "/"
+	}
 	for i := 2; i <= pageCount; i++ {
-		pageUrls = append(pageUrls, fmt.Sprintf("%s/page/%d/", category.LinkHref, i))
+		//page/%d/
+		pageUrls = append(pageUrls, fmt.Sprintf("%s"+pageFormat, category.LinkHref, i))
 	}
 	return pageUrls
 }
 
 //getPageCount 获取页数
-func getPageCount(reader *goquery.Document) int64 {
+func getPageCount(reader *goquery.Document, pageSelector string) int64 {
 	//获取所有的页数的选择器
-	//.pages
-	selection := reader.Find(".pages")
+	logs.Debug("~~~~the page selector:", pageSelector)
+	selection := reader.Find(pageSelector)
 	pageInfo := ""
-	pageCnt := int64(1)
-	var err error
 	if len(selection.Nodes) > 0 {
 		pageInfo = selection.Text()
-	}
-	index := strings.Index(pageInfo, "/")
-	if index > 0 {
-		pageCnt, err = strconv.ParseInt(pageInfo[index+1:index+2], 10, 32)
+		logs.Debug("====the page INfo:", pageInfo)
+		count, err := strconv.ParseInt(pageInfo, 10, 32)
 		if err != nil {
-			logs.Error("parse the page count error:%v", err)
-			return pageCnt
+			logs.Error("get page count error:%v", err)
+			return 1
 		}
+		return count
 	}
-	return pageCnt
+	return 1
 }
