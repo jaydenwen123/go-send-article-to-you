@@ -110,6 +110,22 @@
         "has_author": false,
         "author_selector": ""
       }
+    },
+    {
+      "data_source_name": "阮一峰的博客文章",
+      "data_srouce_url": "http://www.ruanyifeng.com/blog/archives.html",
+      "category_selector": "div#beta-inner div.module-categories.module ul > li>a",
+      "page_count_selector": "",
+      "page_format": "",
+      "article_config": {
+        "article_block_selector": "#alpha-inner > div ul li",
+        "article_link_selector": "a",
+        "article_title_selector": "",
+        "has_date": true,
+        "date_selector": "span.RankBar>span.hint",
+        "has_author": false,
+        "author_selector": ""
+      }
     }
   ]
 }
