@@ -14,7 +14,8 @@
         "has_author": false,
         "author_selector": ""
       }
-    }, {
+    },
+    {
       "data_source_name": "大佬liang1101博客",
       "data_srouce_url": "https://www.cnblogs.com/liang1101/tag/",
       "category_selector": "table#MyTag1_dtTagList a",
@@ -23,12 +24,14 @@
       "article_config": {
         "article_block_selector": "div#myposts>div.PostList",
         "article_link_selector": "div.postTitl2>a",
+        "article_title_selector": "",
         "has_date": true,
         "date_selector": "div.postDesc2",
         "has_author": false,
         "author_selector": ""
       }
-    }, {
+    },
+    {
       "data_source_name": "go语言博客",
       "data_srouce_url": "http://blog.studygolang.com/",
       "category_selector": "#categories-2 a",
@@ -37,10 +40,75 @@
       "article_config": {
         "article_block_selector": "main#main>article",
         "article_link_selector": "h2.entry-title>a",
+        "article_title_selector": "",
         "has_date": true,
         "date_selector": "time.entry-date",
         "has_author": true,
         "author_selector": "span.author.vcard"
+      }
+    },
+    {
+      "data_source_name": "技术成就梦想",
+      "data_srouce_url": "https://www.cnblogs.com/yanghj010/ajax/sidecolumn.aspx",
+      "category_selector": "#sidebar_postcategory li>a",
+      "page_count_selector": "",
+      "page_format": "",
+      "article_config": {
+        "article_block_selector": "div.entrylist div.entrylistItem",
+        "article_link_selector": "div.entrylistPosttitle>a.entrylistItemTitle",
+        "article_title_selector": "",
+        "has_date": true,
+        "date_selector": "div.entrylistItemPostDesc > a:first-child",
+        "has_author": false,
+        "author_selector": ""
+      }
+    },
+    {
+      "data_source_name": "我的博客文章",
+      "data_srouce_url": "https://www.cnblogs.com/wenxiaofei/ajax/sidecolumn.aspx",
+      "category_selector": "#sidebar_postcategory li>a",
+      "page_count_selector": "",
+      "page_format": "",
+      "article_config": {
+        "article_block_selector": "div.entrylist div.entrylistItem",
+        "article_link_selector": "div.entrylistPosttitle>a.entrylistItemTitle",
+        "article_title_selector": "",
+        "has_date": true,
+        "date_selector": "div.entrylistItemPostDesc > a:first-child",
+        "has_author": false,
+        "author_selector": ""
+      }
+    },
+    {
+      "data_source_name": "jacksonary CSDN博客",
+      "data_srouce_url": "https://blog.csdn.net/jacksonary/article/details/82892224",
+      "category_selector": "#recommend-right > div.aside-box.kind_person.d-flex.flex-column div.aside-content a",
+      "page_count_selector": "",
+      "page_format": "",
+      "article_config": {
+        "article_block_selector": ".column_article_list li",
+        "article_link_selector": "a",
+        "article_title_selector": "a > div.column_article_title > h2.title",
+        "has_date": true,
+        "date_selector": "a > div.column_article_data > span:first-child",
+        "has_author": false,
+        "author_selector": ""
+      }
+    },
+    {
+      "data_source_name": "blade2001的CSDN博客",
+      "data_srouce_url": "https://blog.csdn.net/blade2001/article/details/52193990",
+      "category_selector": "#recommend-right > div.aside-box.kind_person.d-flex.flex-column div.aside-content a",
+      "page_count_selector": "",
+      "page_format": "",
+      "article_config": {
+        "article_block_selector": ".column_article_list li",
+        "article_link_selector": "a",
+        "article_title_selector": "a > div.column_article_title > h2.title",
+        "has_date": true,
+        "date_selector": "a > div.column_article_data > span:first-child",
+        "has_author": false,
+        "author_selector": ""
       }
     }
   ]

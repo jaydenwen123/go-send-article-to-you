@@ -6,7 +6,7 @@ type ConfigInfo struct {
 
 //DataSource 数据源配置
 type DataSource struct {
-	DataSourceName string	`json:"data_source_name"`
+	DataSourceName   string `json:"data_source_name"`
 	DataSrouceUrl    string `json:"data_srouce_url"`
 	CategorySelector string `json:"category_selector"`
 	//解析页数的选择器
@@ -23,6 +23,8 @@ type ArticleConfig struct {
 	ArticleBlockSelector string `json:"article_block_selector"`
 	//文章超链接选择器
 	ArticleLinkSelector string `json:"article_link_selector"`
+	//文章标题选择器
+	ArticleTitleSelector string `json:"article_title_selector"`
 
 	//日期
 	HasDate      bool   `json:"has_date"`

@@ -10,36 +10,53 @@ import (
 	"time"
 )
 
-//文章html的模板5
-var category_template = `<h4><a href="%s">%s</a></h4>`
-var article_template = `<li><a href="%s">%s</a><br></li>`
+const (
+	//发送邮件的cron定时表达式
+	emailCronExp = "0 */30 * * * ?"
+	//监控配置文件的cron定时表达式
+	watchCronExp = "0 */2 * * * ?"
+	//每次发送邮件时的文章大小
+	sendArticleLen = 5
+	//配置文件路径
+	configPath = "config/config.json"
+)
 
-var curPos = 0
-var curCategory *Category
+var (
+	//全局的配置文件
+	globalConfig = &config.ConfigInfo{}
+	//配置信息
+	configInfo   = &config.ConfigInfo{}
+	categoryChan = make(chan *Category, 10000)
 
-const cronExp = "0 */30 * * * *"
-const sendArticleLen = 5
-
-//配置信息
-var configInfo = config.ConfigInfo{}
+	//文章html的模板5
+	category_template = `<h4><a href="%s">%s</a></h4>`
+	article_template  = `<li><a href="%s">%s</a><br></li>`
+	curPos            = 0
+	curCategory       *Category
+)
 
 func init() {
-	util.LoadObjectFromJsonFile("config/config.json", &configInfo)
+	logs.SetLogFuncCall(true)
+	logs.SetLogFuncCallDepth(3)
+	util.LoadObjectFromJsonFile(configPath, configInfo)
 	logs.Debug("load the config info success...")
 	logs.Debug("the config info:%+v", configInfo)
 }
 
 func main() {
-	categoryChan := make(chan *Category, 10000)
-	go startTimer(categoryChan)
-	go downloadArticleInfo(categoryChan)
+	//1.开启发送邮件的定时任务
+	go startEmailTimer(categoryChan)
+	//2.开启定时任务监控配置文件
+	go startWatchConfigTimer()
+	//3.开始下载文章数据
+	go downloadArticleInfo(configInfo, categoryChan)
 	select {}
 
 }
 
 //downloadArticleInfo 下载文章信息
-func downloadArticleInfo(categoryChan chan *Category) {
-	for _, dataSource := range configInfo.DataSources {
+func downloadArticleInfo(ci *config.ConfigInfo, categoryChan chan *Category) {
+	for _, dataSource := range ci.DataSources {
 		fmt.Println("item info:", dataSource)
 		handleDataSource(dataSource, categoryChan)
 		time.Sleep(100 * time.Millisecond)

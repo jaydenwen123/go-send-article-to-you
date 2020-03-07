@@ -32,12 +32,12 @@ func GetCategoryList(url string, sector string) []*Category {
 	categories := make([]*Category, 0)
 	//拿到目录的url
 	reader.Find(sector).Each(func(index int, selection *goquery.Selection) {
-		//logs.Debug("index:%v,selection:%v", index, selection)
 		href, exists := selection.Attr("href")
 		if exists {
 			//logs.Debug("the href:%s", href)
 		}
-		title := selection.Text()
+		title := util.TrimSpace(selection.Text())
+		title = strings.Replace(title, "/", "&", -1)
 		//logs.Debug("the title:%s", title)
 		//logs.Debug("==========")
 		categories = append(categories, &Category{
