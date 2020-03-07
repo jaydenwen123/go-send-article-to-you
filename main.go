@@ -28,10 +28,12 @@ func init() {
 }
 
 func main() {
-	categoryChan := make(chan *Category, 0)
+	/*categoryChan := make(chan *Category, 0)
 	go startTimer(categoryChan)
 	go downloadArticleInfo(categoryChan)
-	select {}
+	select {}*/
+	weather()
+	//everydaysen()
 }
 
 func downloadArticleInfo(categoryChan chan *Category) {

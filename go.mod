@@ -11,7 +11,10 @@ require (
 	github.com/jordan-wright/email v0.0.0-20200121133829-a0b5c5b58bb6
 	github.com/olekukonko/tablewriter v0.0.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/robfig/cron v1.2.0
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
 	github.com/ssor/bom v0.0.0-20170718123548-6386211fdfcf // indirect
+	github.com/stretchr/testify v1.5.1 // indirect
+	github.com/tidwall/gjson v1.6.0
 )
