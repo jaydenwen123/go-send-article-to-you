@@ -1,10 +1,17 @@
 {
+  "timer_config": {
+    "watch_config_cron": "0 */5 * * * ?",
+    "send_email_cron": "0 0 */1 * * ?",
+    "send_wechat_cron": "0 */30 * * * ?"
+  },
+  "send_article_len": 5,
   "data_sources": [
     {
       "data_source_name": "大佬liwenzhou博客",
       "data_srouce_url": "https://www.liwenzhou.com/",
       "category_selector": "#secondary > section:nth-child(3) a",
       "page_count_selector": ".page-navigator > li:nth-last-child(2) > a",
+      "category_url_prefix": "",
       "page_format": "page/%d/",
       "article_config": {
         "article_block_selector": "div.res-cons >article",
@@ -20,6 +27,7 @@
       "data_srouce_url": "https://www.cnblogs.com/liang1101/tag/",
       "category_selector": "table#MyTag1_dtTagList a",
       "page_count_selector": "#myposts  div.pager  a:nth-last-child(2)",
+      "category_url_prefix": "",
       "page_format": "default.html?page=%d",
       "article_config": {
         "article_block_selector": "div#myposts>div.PostList",
@@ -36,6 +44,7 @@
       "data_srouce_url": "http://blog.studygolang.com/",
       "category_selector": "#categories-2 a",
       "page_count_selector": "div.wp-pagenavi > a:nth-last-child(2)",
+      "category_url_prefix": "",
       "page_format": "/page/%d/",
       "article_config": {
         "article_block_selector": "main#main>article",
@@ -52,6 +61,7 @@
       "data_srouce_url": "https://www.cnblogs.com/yanghj010/ajax/sidecolumn.aspx",
       "category_selector": "#sidebar_postcategory li>a",
       "page_count_selector": "",
+      "category_url_prefix": "",
       "page_format": "",
       "article_config": {
         "article_block_selector": "div.entrylist div.entrylistItem",
@@ -68,6 +78,7 @@
       "data_srouce_url": "https://www.cnblogs.com/wenxiaofei/ajax/sidecolumn.aspx",
       "category_selector": "#sidebar_postcategory li>a",
       "page_count_selector": "",
+      "category_url_prefix": "",
       "page_format": "",
       "article_config": {
         "article_block_selector": "div.entrylist div.entrylistItem",
@@ -84,6 +95,7 @@
       "data_srouce_url": "https://blog.csdn.net/jacksonary/article/details/82892224",
       "category_selector": "#recommend-right > div.aside-box.kind_person.d-flex.flex-column div.aside-content a",
       "page_count_selector": "",
+      "category_url_prefix": "",
       "page_format": "",
       "article_config": {
         "article_block_selector": ".column_article_list li",
@@ -100,6 +112,7 @@
       "data_srouce_url": "https://blog.csdn.net/blade2001/article/details/52193990",
       "category_selector": "#recommend-right > div.aside-box.kind_person.d-flex.flex-column div.aside-content a",
       "page_count_selector": "",
+      "category_url_prefix": "",
       "page_format": "",
       "article_config": {
         "article_block_selector": ".column_article_list li",
@@ -116,6 +129,7 @@
       "data_srouce_url": "http://www.ruanyifeng.com/blog/archives.html",
       "category_selector": "div#beta-inner div.module-categories.module ul > li>a",
       "page_count_selector": "",
+      "category_url_prefix": "",
       "page_format": "",
       "article_config": {
         "article_block_selector": "#alpha-inner > div ul li",

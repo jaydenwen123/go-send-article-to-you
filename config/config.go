@@ -1,7 +1,17 @@
 package config
 
+//TimerConfig 定时器cron表达式配置
+type TimerConfig struct {
+	WatchConfigCron string `json:"watch_config_cron"`
+	SendEmailCron   string `json:"send_email_cron"`
+	SendWechatCron  string `json:"send_wechat_cron"`
+}
+
+//ConfigInfo 全局配置信息
 type ConfigInfo struct {
-	DataSources []*DataSource `json:"data_sources"`
+	TimerConfig    TimerConfig   `json:"timer_config"`
+	SendArticleLen int           `json:"send_article_len"`
+	DataSources    []*DataSource `json:"data_sources"`
 }
 
 //DataSource 数据源配置
@@ -11,6 +21,8 @@ type DataSource struct {
 	CategorySelector string `json:"category_selector"`
 	//解析页数的选择器
 	PageCountSelector string `json:"page_count_selector"`
+
+	CategoryUrlPrefix string `json:"category_url_prefix"`
 	//栏目分页的url后缀格式
 	PageFormat string `json:"page_format"`
 

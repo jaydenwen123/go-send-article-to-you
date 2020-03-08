@@ -29,13 +29,13 @@ func sendEmail(category *Category) {
 		time.Now().Format("2006-01-02 15:05:06")+".json", "application/json")
 	//添加附件
 	if err != nil {
-		logs.Error("email add attach file error:%v", err)
+		logs.Error("TimerType_email add attach file error:%v", err)
 	}
 
 	err = e.Send("smtp.qq.com:25", smtp.PlainAuth("", "2282186474@qq.com",
 		"akpqrchsjvlvecdf", "smtp.qq.com"))
 	if err != nil {
-		logs.Error("send email error:%v", err)
+		logs.Error("send TimerType_email error:%v", err)
 		return
 	}
 	logs.Debug("send the go article success......")

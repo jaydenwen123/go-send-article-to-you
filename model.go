@@ -4,6 +4,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/astaxie/beego/logs"
 	"github.com/jaydenwen123/go-util"
+	"path/filepath"
 	"strings"
 )
 
@@ -22,7 +23,7 @@ type Article struct {
 }
 
 //GetCategoryList 根据url爬取网页中的文章栏目链接
-func GetCategoryList(url string, sector string) []*Category {
+func GetCategoryList(url string, sector string, categoryUrlPrefix string) []*Category {
 	_, data := util.Request(url)
 	reader, err := goquery.NewDocumentFromReader(strings.NewReader(data))
 	if err != nil {
@@ -32,9 +33,10 @@ func GetCategoryList(url string, sector string) []*Category {
 	categories := make([]*Category, 0)
 	//拿到目录的url
 	reader.Find(sector).Each(func(index int, selection *goquery.Selection) {
-		href, exists := selection.Attr("href")
-		if exists {
-			//logs.Debug("the href:%s", href)
+		href, _ := selection.Attr("href")
+		//href是相对路径，进行拼接
+		if categoryUrlPrefix != "" {
+			href = filepath.Join(categoryUrlPrefix, href)
 		}
 		title := util.TrimSpace(selection.Text())
 		title = strings.Replace(title, "/", "&", -1)
