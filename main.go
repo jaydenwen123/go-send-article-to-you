@@ -6,6 +6,7 @@ import (
 	"github.com/jaydenwen123/go-send-article-to-you/config"
 	"github.com/jaydenwen123/go-util"
 	"github.com/robfig/cron/v3"
+	"os"
 	"path/filepath"
 	"sync"
 	"time"
@@ -98,7 +99,12 @@ func handleDataSource(item *config.DataSource, categoryChan chan *Category) {
 	//2.保存文件
 	list := GetCategoryList(item.DataSrouceUrl, item.CategorySelector, item.CategoryUrlPrefix)
 	dir := filepath.Join("data", item.DataSourceName)
-	err := util.InitDir(dir)
+	_, err := os.Stat(dir)
+	if  err==nil{
+		logs.Debug("the data source is downloaded. so will not download again.....")
+		return
+	}
+	err = util.InitDir(dir)
 	if err != nil {
 		logs.Error("init dir:<%s> error:%v", dir, err)
 	}

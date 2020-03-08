@@ -1,6 +1,6 @@
 {
   "timer_config": {
-    "watch_config_cron": "0 */5 * * * ?",
+    "watch_config_cron": "0 */10 * * * ?",
     "send_email_cron": "0 0 */1 * * ?",
     "send_wechat_cron": "0 */30 * * * ?"
   },
