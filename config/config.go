@@ -39,7 +39,6 @@ type ArticleConfig struct {
 	ArticleTitleSelector string `json:"article_title_selector"`
 	//文章的前缀，有些网站时设置的相对路径
 	ArticleLinkPrefix	string`json:"article_link_prefix"`
-
 	//日期
 	HasDate      bool   `json:"has_date"`
 	DateSelector string `json:"date_selector"`

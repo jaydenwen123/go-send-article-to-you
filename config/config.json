@@ -166,6 +166,24 @@
         "has_author": false,
         "author_selector": ""
       }
+    },
+    {
+      "data_source_name": "weixin_44037416的CSDN博客",
+      "data_srouce_url": "https://blog.csdn.net/weixin_44037416/article/details/104560177",
+      "category_selector": "#recommend-right > div.aside-box.kind_person.d-flex.flex-column div.aside-content a",
+      "page_count_selector": "",
+      "category_url_prefix": "",
+      "page_format": "",
+      "article_config": {
+        "article_block_selector": ".column_article_list li",
+        "article_link_selector": "a",
+        "article_title_selector": "a > div.column_article_title > h2.title",
+        "article_link_prefix": "",
+        "has_date": true,
+        "date_selector": "a > div.column_article_data > span:first-child",
+        "has_author": false,
+        "author_selector": ""
+      }
     }
   ]
 }
