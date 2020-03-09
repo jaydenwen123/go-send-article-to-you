@@ -6,6 +6,7 @@ import (
 	"github.com/jaydenwen123/go-send-article-to-you/config"
 	"github.com/jaydenwen123/go-util"
 	"github.com/robfig/cron/v3"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"sync"
@@ -48,6 +49,10 @@ var (
 	c *cron.Cron
 	//维护定时任务的map
 	timerMap map[TimerType]cron.EntryID
+
+	//总文章数
+	articleCount  int
+	categoryCount int
 )
 
 func init() {
@@ -91,6 +96,7 @@ func downloadArticleInfo(ci *config.ConfigInfo, categoryChan chan *Category) {
 		//	http://blog.studygolang.com/category/package/+/page/2/
 		//每篇文章的超链接选择器
 	}
+	logs.Debug("===the  category len:<%d>,the artcicle count:<%d>", categoryCount, articleCount)
 }
 
 //handleDataSource 处理单个数据源
@@ -100,8 +106,10 @@ func handleDataSource(item *config.DataSource, categoryChan chan *Category) {
 	list := GetCategoryList(item.DataSrouceUrl, item.CategorySelector, item.CategoryUrlPrefix)
 	dir := filepath.Join("data", item.DataSourceName)
 	_, err := os.Stat(dir)
-	if  err==nil{
+	if err == nil {
 		logs.Debug("the data source is downloaded. so will not download again.....")
+		//读取所有的文件，并构建category,发送到管道
+		loadCategoryInfoFromFile(dir, categoryChan)
 		return
 	}
 	err = util.InitDir(dir)
@@ -122,4 +130,31 @@ func handleDataSource(item *config.DataSource, categoryChan chan *Category) {
 	}
 	wg.Wait()
 	logs.Debug("the all category articles is parsed finish....")
+}
+
+//loadCategoryInfoFromFile 从文件加载信息
+func loadCategoryInfoFromFile(dir string, categories chan *Category) {
+	dirList, err := ioutil.ReadDir(dir)
+	if err != nil {
+		logs.Error("loadCategoryInfoFromFile read dirList error:%v", err)
+		return
+	}
+	var aCount, cCount int
+	for _, item := range dirList {
+		name := item.Name()
+		isDir := item.IsDir()
+		if !isDir && filepath.Ext(name) == ".json" {
+			//读取数据
+			cCount++
+			category := &Category{
+				Articles: make([]*Article, 0),
+			}
+			util.LoadObjectFromJsonFile(filepath.Join(dir, name), category)
+			aCount += len(category.Articles)
+			categoryChan <- category
+		}
+	}
+	categoryCount += cCount
+	articleCount += aCount
+	logs.Debug("the dir:[%s] has category:<%d>,has all article:<%d>", dir, cCount, aCount)
 }
