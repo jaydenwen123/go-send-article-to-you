@@ -4,7 +4,10 @@ if [ $# == 0 ]; then
   exit
 fi
 echo "begin to commit to repositry..."
-git commit -a -m $1
+commitScript=`git commit -a -m $1`
+echo "commit scripte:"$commitScript
+echo
+$commitScript
 echo "commit success...."
 echo "begin to push to remote repositry..."
 git push origin master
