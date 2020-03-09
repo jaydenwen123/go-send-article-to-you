@@ -46,16 +46,52 @@ var (
 	//总文章数
 	articleCount  int
 	categoryCount int
+
+	//模板
+	templateMap map[config.TemplateType]config.TemplateFunc
 )
 
 func init() {
+	//注册数据源模板
+	registerDataSourceTemplate()
+	//开始定时器
 	c = cron.New(cron.WithSeconds())
 	timerMap = make(map[TimerType]cron.EntryID)
 	logs.SetLogFuncCall(true)
 	logs.SetLogFuncCallDepth(3)
-	util.LoadObjectFromJsonFile(configPath, configInfo)
+	loadConfigInfo(configInfo)
 	logs.Debug("load the config info success...")
 	logs.Debug("the config info:%+v", configInfo)
+}
+
+//initConfigInfo 初始化数据源
+func loadConfigInfo(c *config.ConfigInfo) {
+	util.LoadObjectFromJsonFile(configPath, c)
+	dsList := c.DataSources
+	if len(dsList) > 0 {
+		for i, dataSource := range dsList {
+			if dataSource.UserTemplate {
+				tFunc, ok := templateMap[dataSource.TemplateType]
+				if !ok {
+					logs.Error("the template type is not valid....")
+					continue
+				}
+				templateDS := tFunc(dataSource.DataSourceName, dataSource.DataSrouceUrl)
+				dsList[i] = templateDS
+			}
+		}
+		//最终得数据源
+		c.DataSources = dsList
+	}
+}
+
+//registerDataSourceTemplate 注册数据源模板
+func registerDataSourceTemplate() {
+	templateMap = make(map[config.TemplateType]config.TemplateFunc)
+	//开始注册模板
+	templateMap[config.TemplateType_BLOG] = config.NewBlogDataSourceTemplate
+	templateMap[config.TemplateType_CSDN] = config.NewCSDNDataSourceTemplate
+	templateMap[config.TemplateType_GOWEB] = config.NewGoWebsiteDataSourceTemplate
 }
 
 func main() {
@@ -81,10 +117,8 @@ func startTimer() {
 
 //downloadArticleInfo 下载文章信息
 func downloadArticleInfo(ci *config.ConfigInfo, categoryChan chan *Category) {
-	for i, dataSource := range ci.DataSources {
-		if i!=10 {
-			continue
-		}
+	for _, dataSource := range ci.DataSources {
+
 		fmt.Println("item info:", dataSource)
 		handleDataSource(dataSource, categoryChan)
 		time.Sleep(100 * time.Millisecond)

@@ -1,6 +1,6 @@
 {
   "timer_config": {
-    "watch_config_cron": "0 */10 * * * ?",
+    "watch_config_cron": "0 */5 * * * ?",
     "send_email_cron": "0 0 */1 * * ?",
     "send_wechat_cron": "0 */30 * * * ?"
   },
@@ -25,21 +25,9 @@
     },
     {
       "data_source_name": "大佬liang1101博客",
-      "data_srouce_url": "https://www.cnblogs.com/liang1101/tag/",
-      "category_selector": "table#MyTag1_dtTagList a",
-      "page_count_selector": "#myposts  div.pager  a:nth-last-child(2)",
-      "category_url_prefix": "",
-      "page_format": "default.html?page=%d",
-      "article_config": {
-        "article_block_selector": "div#myposts>div.PostList",
-        "article_link_selector": "div.postTitl2>a",
-        "article_title_selector": "",
-        "article_link_prefix": "",
-        "has_date": true,
-        "date_selector": "div.postDesc2",
-        "has_author": false,
-        "author_selector": ""
-      }
+      "data_srouce_url": "liang1101",
+      "user_template": true,
+      "template_type": "blog"
     },
     {
       "data_source_name": "go语言博客",
@@ -61,75 +49,27 @@
     },
     {
       "data_source_name": "技术成就梦想",
-      "data_srouce_url": "https://www.cnblogs.com/yanghj010/ajax/sidecolumn.aspx",
-      "category_selector": "#sidebar_postcategory li>a",
-      "page_count_selector": "",
-      "category_url_prefix": "",
-      "page_format": "",
-      "article_config": {
-        "article_block_selector": "div.entrylist div.entrylistItem",
-        "article_link_selector": "div.entrylistPosttitle>a.entrylistItemTitle",
-        "article_title_selector": "",
-        "article_link_prefix": "",
-        "has_date": true,
-        "date_selector": "div.entrylistItemPostDesc > a:first-child",
-        "has_author": false,
-        "author_selector": ""
-      }
+      "data_srouce_url": "yanghj010",
+      "user_template": true,
+      "template_type": "blog"
     },
     {
       "data_source_name": "我的博客文章",
-      "data_srouce_url": "https://www.cnblogs.com/wenxiaofei/ajax/sidecolumn.aspx",
-      "category_selector": "#sidebar_postcategory li>a",
-      "page_count_selector": "",
-      "category_url_prefix": "",
-      "page_format": "",
-      "article_config": {
-        "article_block_selector": "div.entrylist div.entrylistItem",
-        "article_link_selector": "div.entrylistPosttitle>a.entrylistItemTitle",
-        "article_title_selector": "",
-        "article_link_prefix": "",
-        "has_date": true,
-        "date_selector": "div.entrylistItemPostDesc > a:first-child",
-        "has_author": false,
-        "author_selector": ""
-      }
+      "data_srouce_url": "wenxiaofei",
+      "user_template": true,
+      "template_type": "blog"
     },
     {
       "data_source_name": "jacksonary CSDN博客",
       "data_srouce_url": "https://blog.csdn.net/jacksonary/article/details/82892224",
-      "category_selector": "#recommend-right > div.aside-box.kind_person.d-flex.flex-column div.aside-content a",
-      "page_count_selector": "",
-      "category_url_prefix": "",
-      "page_format": "",
-      "article_config": {
-        "article_block_selector": ".column_article_list li",
-        "article_link_selector": "a",
-        "article_title_selector": "a > div.column_article_title > h2.title",
-        "article_link_prefix": "",
-        "has_date": true,
-        "date_selector": "a > div.column_article_data > span:first-child",
-        "has_author": false,
-        "author_selector": ""
-      }
+      "user_template": true,
+      "template_type": "csdn"
     },
     {
       "data_source_name": "blade2001的CSDN博客",
       "data_srouce_url": "https://blog.csdn.net/blade2001/article/details/52193990",
-      "category_selector": "#recommend-right > div.aside-box.kind_person.d-flex.flex-column div.aside-content a",
-      "page_count_selector": "",
-      "category_url_prefix": "",
-      "page_format": "",
-      "article_config": {
-        "article_block_selector": ".column_article_list li",
-        "article_link_selector": "a",
-        "article_title_selector": "a > div.column_article_title > h2.title",
-        "article_link_prefix": "",
-        "has_date": true,
-        "date_selector": "a > div.column_article_data > span:first-child",
-        "has_author": false,
-        "author_selector": ""
-      }
+      "user_template": true,
+      "template_type": "csdn"
     },
     {
       "data_source_name": "阮一峰的博客文章",
@@ -170,38 +110,20 @@
     {
       "data_source_name": "weixin_44037416的CSDN博客",
       "data_srouce_url": "https://blog.csdn.net/weixin_44037416/article/details/104560177",
-      "category_selector": "#recommend-right > div.aside-box.kind_person.d-flex.flex-column div.aside-content a",
-      "page_count_selector": "",
-      "category_url_prefix": "",
-      "page_format": "",
-      "article_config": {
-        "article_block_selector": ".column_article_list li",
-        "article_link_selector": "a",
-        "article_title_selector": "a > div.column_article_title > h2.title",
-        "article_link_prefix": "",
-        "has_date": true,
-        "date_selector": "a > div.column_article_data > span:first-child",
-        "has_author": false,
-        "author_selector": ""
-      }
+      "user_template": true,
+      "template_type": "csdn"
     },
     {
       "data_source_name": "Go专栏教程文章",
       "data_srouce_url": "https://studygolang.com/?tab=subject",
-      "category_selector": "table  td:nth-child(3) > span.item_title >a",
-      "page_count_selector": "",
-      "category_url_prefix": "https://studygolang.com",
-      "page_format": "",
-      "article_config": {
-        "article_block_selector": "div#list-container ul li > div.article-content",
-        "article_link_selector": "a.article-title",
-        "article_title_selector": "",
-        "article_link_prefix": "https://studygolang.com",
-        "has_date": true,
-        "date_selector": "div.info>span.time.timeago",
-        "has_author": true,
-        "author_selector": "div.info> a.nickname"
-      }
+      "user_template": true,
+      "template_type": "go_web"
+    },
+    {
+      "data_source_name": "qq_41185868CSDN博客文章",
+      "data_srouce_url": "https://blog.csdn.net/qq_41185868/article/details/100822646",
+      "user_template": true,
+      "template_type": "csdn"
     }
   ]
 }

@@ -1,5 +1,16 @@
 package config
 
+type TemplateType string
+
+const (
+	//csdn模板
+	TemplateType_CSDN TemplateType = "csdn"
+	//blog模板
+	TemplateType_BLOG TemplateType = "blog"
+	//go语言中文网模板
+	TemplateType_GOWEB TemplateType = "go_web"
+)
+
 //TimerConfig 定时器cron表达式配置
 type TimerConfig struct {
 	WatchConfigCron string `json:"watch_config_cron"`
@@ -16,8 +27,13 @@ type ConfigInfo struct {
 
 //DataSource 数据源配置
 type DataSource struct {
-	DataSourceName   string `json:"data_source_name"`
-	DataSrouceUrl    string `json:"data_srouce_url"`
+	DataSourceName string `json:"data_source_name"`
+	DataSrouceUrl  string `json:"data_srouce_url"`
+	//是否使用模板,目前支持csdn模板、博客园模板、go语言中文网模板
+	UserTemplate bool `json:"user_template"`
+
+	TemplateType TemplateType `json:"template_type"`
+
 	CategorySelector string `json:"category_selector"`
 	//解析页数的选择器
 	PageCountSelector string `json:"page_count_selector"`
@@ -38,7 +54,7 @@ type ArticleConfig struct {
 	//文章标题选择器
 	ArticleTitleSelector string `json:"article_title_selector"`
 	//文章的前缀，有些网站时设置的相对路径
-	ArticleLinkPrefix	string`json:"article_link_prefix"`
+	ArticleLinkPrefix string `json:"article_link_prefix"`
 	//日期
 	HasDate      bool   `json:"has_date"`
 	DateSelector string `json:"date_selector"`

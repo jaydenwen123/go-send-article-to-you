@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/astaxie/beego/logs"
 	"github.com/jaydenwen123/go-send-article-to-you/config"
-	"github.com/jaydenwen123/go-util"
 )
 
 //addWatchConfigTask 监控配置文件
@@ -22,7 +21,7 @@ func addWatchConfigTask(configInfo *config.ConfigInfo) {
 
 //watchConfig 监控配置文件config.json的变化
 func watchConfig() {
-	util.LoadObjectFromJsonFile(configPath, globalConfig)
+	loadConfigInfo(globalConfig)
 	logs.Debug("watch the config file change...............")
 	logs.Debug("the global config len:", len(globalConfig.DataSources))
 	//1.比较数据源是否变化
