@@ -4,7 +4,6 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/astaxie/beego/logs"
 	"github.com/jaydenwen123/go-util"
-	"path/filepath"
 	"strings"
 )
 
@@ -34,9 +33,12 @@ func GetCategoryList(url string, sector string, categoryUrlPrefix string) []*Cat
 	//拿到目录的url
 	reader.Find(sector).Each(func(index int, selection *goquery.Selection) {
 		href, _ := selection.Attr("href")
+		if !strings.HasSuffix(href, "/") {
+			href += "/"
+		}
 		//href是相对路径，进行拼接
 		if categoryUrlPrefix != "" {
-			href = filepath.Join(categoryUrlPrefix, href)
+			href = categoryUrlPrefix+href
 		}
 		title := util.TrimSpace(selection.Text())
 		title = strings.Replace(title, "/", "&", -1)

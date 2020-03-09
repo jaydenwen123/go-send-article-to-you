@@ -89,6 +89,7 @@ func startTimer() {
 //downloadArticleInfo 下载文章信息
 func downloadArticleInfo(ci *config.ConfigInfo, categoryChan chan *Category) {
 	for _, dataSource := range ci.DataSources {
+
 		fmt.Println("item info:", dataSource)
 		handleDataSource(dataSource, categoryChan)
 		time.Sleep(100 * time.Millisecond)

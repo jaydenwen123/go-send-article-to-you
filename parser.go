@@ -14,7 +14,7 @@ import (
 
 //ParseCategory 解析栏目
 func ParseCategory(category *Category, item *config.DataSource) {
-	logs.Debug("ParseCategory=======>[%s].....", category.Title)
+	logs.Debug("ParseCategory=======>[%s]---[%s].....", category.LinkHref, category.Title)
 	url := category.LinkHref
 	bdata, _ := util.Request(url)
 	reader, err := goquery.NewDocumentFromReader(bytes.NewReader(bdata))
@@ -57,6 +57,9 @@ func parseOnePage(category *Category, url string, item *config.ArticleConfig) []
 		//解析文章标题、链接
 		articleLink := selection.Find(item.ArticleLinkSelector)
 		href, _ = articleLink.Attr("href")
+		if item.ArticleLinkPrefix != "" || len(item.ArticleLinkPrefix) > 0 {
+			href = item.ArticleLinkPrefix + href
+		}
 		if item.ArticleTitleSelector == "" {
 			title = articleLink.Text()
 		} else {
