@@ -7,7 +7,7 @@ echo "begin to commit to repositry..."
 commitScript=`git commit -a -m $1`
 echo "commit scripte:"$commitScript
 echo
-$commitScript
+exec $commitScript
 echo "commit success...."
 echo "begin to push to remote repositry..."
 git push origin master
