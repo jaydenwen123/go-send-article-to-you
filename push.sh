@@ -1,7 +1,7 @@
 #!/bin/bash
-if [ $1 -z "" ]; then
+if [ $# == 0 ]; then
   echo "the commit info is empty..."
-    exit
+  exit
 fi
 echo "begin to commit to repositry..."
 git commit -a -m $1
