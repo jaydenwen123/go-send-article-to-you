@@ -30,12 +30,13 @@ func GetCategoryList(url string, sector string, categoryUrlPrefix string) []*Cat
 		return nil
 	}
 	categories := make([]*Category, 0)
+	logs.Debug("the selector:",sector,reader.Find(sector).Length())
 	//拿到目录的url
 	reader.Find(sector).Each(func(index int, selection *goquery.Selection) {
 		href, _ := selection.Attr("href")
-		if !strings.HasSuffix(href, "/") {
-			href += "/"
-		}
+		//if !strings.HasSuffix(href, "/") {
+		//	href += "/"
+		//}
 		//href是相对路径，进行拼接
 		if categoryUrlPrefix != "" {
 			href = categoryUrlPrefix+href

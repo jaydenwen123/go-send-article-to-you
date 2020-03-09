@@ -14,13 +14,6 @@ import (
 )
 
 const (
-	////发送邮件的cron定时表达式
-	//emailCronExp = "0 */30 * * * ?"
-	////监控配置文件的cron定时表达式
-	//watchCronExp = "0 */2 * * * ?"
-	////每次发送邮件时的文章大小
-	//sendArticleLen = 5
-
 	//配置文件路径
 	configPath = "config/config.json"
 )
@@ -88,8 +81,10 @@ func startTimer() {
 
 //downloadArticleInfo 下载文章信息
 func downloadArticleInfo(ci *config.ConfigInfo, categoryChan chan *Category) {
-	for _, dataSource := range ci.DataSources {
-
+	for i, dataSource := range ci.DataSources {
+		if i!=10 {
+			continue
+		}
 		fmt.Println("item info:", dataSource)
 		handleDataSource(dataSource, categoryChan)
 		time.Sleep(100 * time.Millisecond)

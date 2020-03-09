@@ -184,6 +184,24 @@
         "has_author": false,
         "author_selector": ""
       }
+    },
+    {
+      "data_source_name": "Go专栏教程文章",
+      "data_srouce_url": "https://studygolang.com/?tab=subject",
+      "category_selector": "table  td:nth-child(3) > span.item_title >a",
+      "page_count_selector": "",
+      "category_url_prefix": "https://studygolang.com",
+      "page_format": "",
+      "article_config": {
+        "article_block_selector": "div#list-container ul li > div.article-content",
+        "article_link_selector": "a.article-title",
+        "article_title_selector": "",
+        "article_link_prefix": "https://studygolang.com",
+        "has_date": true,
+        "date_selector": "div.info>span.time.timeago",
+        "has_author": true,
+        "author_selector": "div.info> a.nickname"
+      }
     }
   ]
 }
