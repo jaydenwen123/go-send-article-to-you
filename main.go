@@ -108,10 +108,14 @@ func main() {
 
 //startTimer 开启定时任务
 func startTimer() {
-	//1.开启发送邮件的定时任务
-	addEmailTask(configInfo, categoryChan)
-	//2.开启定时任务监控配置文件
-	addWatchConfigTask(configInfo)
+	if configInfo.TimerConfig.NeedSendEmail {
+		//1.开启发送邮件的定时任务
+		addEmailTask(configInfo, categoryChan)
+	}
+	if configInfo.TimerConfig.NeedWatchConfig {
+		//2.开启定时任务监控配置文件
+		addWatchConfigTask(configInfo)
+	}
 	c.Start()
 }
 

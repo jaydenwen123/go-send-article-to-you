@@ -61,11 +61,15 @@ func handleTimer(newConfig *config.ConfigInfo, timerType TimerType) {
 			//todo
 			return
 		case TimerType_watchConfig:
-			addWatchConfigTask(newConfig)
-			logs.Debug("########new watch config timer is effected.....")
+			if newConfig.TimerConfig.NeedWatchConfig {
+				addWatchConfigTask(newConfig)
+				logs.Debug("########new watch config timer is effected.....")
+			}
 		case TimerType_email:
-			addEmailTask(newConfig, categoryChan)
-			logs.Debug("======new email timer is effected.....")
+			if newConfig.TimerConfig.NeedSendEmail {
+				addEmailTask(newConfig, categoryChan)
+				logs.Debug("======new email timer is effected.....")
+			}
 		default:
 			logs.Error("unknown timerType")
 		}

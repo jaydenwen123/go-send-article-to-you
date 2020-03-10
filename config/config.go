@@ -13,8 +13,11 @@ const (
 
 //TimerConfig 定时器cron表达式配置
 type TimerConfig struct {
+	NeedWatchConfig	bool	`json:"need_watch_config"`
 	WatchConfigCron string `json:"watch_config_cron"`
+	NeedSendEmail	bool	`json:"need_send_email"`
 	SendEmailCron   string `json:"send_email_cron"`
+	NeedSendWechat	bool	`json:"need_send_wechat"`
 	SendWechatCron  string `json:"send_wechat_cron"`
 }
 

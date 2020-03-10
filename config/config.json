@@ -1,7 +1,10 @@
 {
   "timer_config": {
+    "need_watch_config": true,
     "watch_config_cron": "0 */10 * * * ?",
+    "need_send_email": false,
     "send_email_cron": "0 0 12,18,20,21,22,23 * * ?",
+    "need_send_wechat": false,
     "send_wechat_cron": "0 */30 * * * ?"
   },
   "send_article_len": 5,
@@ -122,6 +125,12 @@
     {
       "data_source_name": "qq_41185868CSDN博客文章",
       "data_srouce_url": "https://blog.csdn.net/qq_41185868/article/details/100822646",
+      "user_template": true,
+      "template_type": "csdn"
+    },
+    {
+      "data_source_name": "sinat_36246371CSDN博客文章",
+      "data_srouce_url": "https://blog.csdn.net/sinat_36246371/article/details/79738782",
       "user_template": true,
       "template_type": "csdn"
     }
