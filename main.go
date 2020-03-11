@@ -137,7 +137,6 @@ func downloadArticleInfo(ci *config.ConfigInfo, categoryChan chan *Category) {
 func handleDataSource(item *config.DataSource, categoryChan chan *Category) {
 	//1.初始化保存文件的目录
 	//2.保存文件
-	list := GetCategoryList(item.DataSrouceUrl, item.CategorySelector, item.CategoryUrlPrefix)
 	dir := filepath.Join("data", item.DataSourceName)
 	_, err := os.Stat(dir)
 	if err == nil {
@@ -146,6 +145,7 @@ func handleDataSource(item *config.DataSource, categoryChan chan *Category) {
 		loadCategoryInfoFromFile(dir, categoryChan)
 		return
 	}
+	list := GetCategoryList(item.DataSrouceUrl, item.CategorySelector, item.CategoryUrlPrefix)
 	err = util.InitDir(dir)
 	if err != nil {
 		logs.Error("init dir:<%s> error:%v", dir, err)
