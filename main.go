@@ -1,16 +1,18 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"github.com/astaxie/beego/logs"
-	"github.com/jaydenwen123/go-send-article-to-you/config"
-	"github.com/jaydenwen123/go-util"
-	"github.com/robfig/cron/v3"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"sync"
 	"time"
+
+	"github.com/astaxie/beego/logs"
+	"github.com/jaydenwen123/go-send-article-to-you/config"
+	"github.com/jaydenwen123/go-util"
+	"github.com/robfig/cron/v3"
 )
 
 const (
@@ -27,14 +29,16 @@ const (
 )
 
 var (
+	ctx = context.Background()
 	//全局的配置文件
 	globalConfig = &config.ConfigInfo{}
 	//配置信息
-	configInfo   = &config.ConfigInfo{}
+	configInfo = &config.ConfigInfo{}
 
 	//存放数据的消息队列
+	//确保开启kafka和zookeeper
 	//todo 改成kafka消息队列实现
-	categoryChan = make(chan *Category, 10000)
+	topic = "all_articles"
 
 	//文章html的模板5
 	category_template = `<h4><a href="%s">%s</a></h4>`
@@ -46,6 +50,7 @@ var (
 	//维护定时任务的map
 	timerMap map[TimerType]cron.EntryID
 
+
 	//总文章数
 	articleCount  int
 	categoryCount int
@@ -55,6 +60,11 @@ var (
 )
 
 func init() {
+	//初始化kafka主题、消费者、生产者
+	createKafkaTopic("tcp", "127.0.0.1:9092", topic, 3, 3)
+	initKafkaProducter([]string{"localhost:9092"}, topic,true)
+	initKafkaConsumer([]string{"localhost:9092"}, "", topic)
+
 	//注册数据源模板
 	registerDataSourceTemplate()
 	//开始定时器
@@ -102,7 +112,7 @@ func main() {
 		startTimer()
 	}()
 	//3.开始下载文章数据
-	go downloadArticleInfo(configInfo, categoryChan)
+	go downloadArticleInfo(configInfo)
 	select {}
 
 	//todo 3.添加发送微信的功能
@@ -113,7 +123,7 @@ func main() {
 func startTimer() {
 	if configInfo.TimerConfig.NeedSendEmail {
 		//1.开启发送邮件的定时任务
-		addEmailTask(configInfo, categoryChan)
+		addEmailTask(configInfo)
 	}
 	if configInfo.TimerConfig.NeedWatchConfig {
 		//2.开启定时任务监控配置文件
@@ -123,11 +133,11 @@ func startTimer() {
 }
 
 //downloadArticleInfo 下载文章信息
-func downloadArticleInfo(ci *config.ConfigInfo, categoryChan chan *Category) {
+func downloadArticleInfo(ci *config.ConfigInfo) {
 	for _, dataSource := range ci.DataSources {
 
 		fmt.Println("item info:", dataSource)
-		handleDataSource(dataSource, categoryChan)
+		handleDataSource(dataSource)
 		time.Sleep(100 * time.Millisecond)
 		//栏目的每页超链接
 		//	http://blog.studygolang.com/category/package/+/page/2/
@@ -137,7 +147,7 @@ func downloadArticleInfo(ci *config.ConfigInfo, categoryChan chan *Category) {
 }
 
 //handleDataSource 处理单个数据源
-func handleDataSource(item *config.DataSource, categoryChan chan *Category) {
+func handleDataSource(item *config.DataSource) {
 	//1.初始化保存文件的目录
 	//2.保存文件
 	dir := filepath.Join("data", item.DataSourceName)
@@ -145,7 +155,7 @@ func handleDataSource(item *config.DataSource, categoryChan chan *Category) {
 	if err == nil {
 		logs.Debug("the data source is downloaded. so will not download again.....")
 		//读取所有的文件，并构建category,发送到管道
-		loadCategoryInfoFromFile(dir, categoryChan)
+		loadCategoryInfoFromFile(dir)
 		return
 	}
 	list := GetCategoryList(item.DataSrouceUrl, item.CategorySelector, item.CategoryUrlPrefix)
@@ -156,21 +166,26 @@ func handleDataSource(item *config.DataSource, categoryChan chan *Category) {
 	wg := sync.WaitGroup{}
 	for _, category := range list {
 		wg.Add(1)
-		go func(item *config.DataSource, category *Category, cc chan *Category) {
+		go func(item *config.DataSource, category *Category, ) {
 			wg.Done()
 			ParseCategory(category, item)
 			util.Save2JsonFile(category, filepath.Join(dir, category.Title+".json"))
 			if len(category.Articles) > 0 {
-				cc <- category
+				e:= sendMessage(category)
+				if e != nil {
+					logs.Error("sendMessage error:%v", e)
+				}
 			}
-		}(item, category, categoryChan)
+		}(item, category)
 	}
 	wg.Wait()
+
 	logs.Debug("the all category articles is parsed finish....")
 }
 
+
 //loadCategoryInfoFromFile 从文件加载信息
-func loadCategoryInfoFromFile(dir string, categories chan *Category) {
+func loadCategoryInfoFromFile(dir string) {
 	dirList, err := ioutil.ReadDir(dir)
 	if err != nil {
 		logs.Error("loadCategoryInfoFromFile read dirList error:%v", err)
@@ -188,7 +203,11 @@ func loadCategoryInfoFromFile(dir string, categories chan *Category) {
 			}
 			util.LoadObjectFromJsonFile(filepath.Join(dir, name), category)
 			aCount += len(category.Articles)
-			categoryChan <- category
+			//生产数据
+			e:= sendMessage(category)
+			if e != nil {
+				logs.Error("sendMessage error:%v", e)
+			}
 		}
 	}
 	categoryCount += cCount

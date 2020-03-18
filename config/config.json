@@ -3,7 +3,7 @@
     "need_watch_config": true,
     "watch_config_cron": "0 */10 * * * ?",
     "need_send_email": true,
-    "send_email_cron": "0 0 12,15-20 * * ?",
+    "send_email_cron": "0 3 * * * ?",
     "need_send_wechat": false,
     "send_wechat_cron": "0 */30 * * * ?"
   },

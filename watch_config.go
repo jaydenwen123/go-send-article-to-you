@@ -67,7 +67,7 @@ func handleTimer(newConfig *config.ConfigInfo, timerType TimerType) {
 			}
 		case TimerType_email:
 			if newConfig.TimerConfig.NeedSendEmail {
-				addEmailTask(newConfig, categoryChan)
+				addEmailTask(newConfig)
 				logs.Debug("======new email timer is effected.....")
 			}
 		default:
@@ -95,7 +95,7 @@ func compareDataSource(globalConfig *config.ConfigInfo) {
 		if len(newConfig.DataSources) > 0 {
 			logs.Debug("begin to sync the new data source article.........")
 			configInfo.DataSources = append(configInfo.DataSources, newConfig.DataSources...)
-			downloadArticleInfo(newConfig, categoryChan)
+			downloadArticleInfo(newConfig)
 		}
 	}()
 }
