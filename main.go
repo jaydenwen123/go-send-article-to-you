@@ -31,6 +31,9 @@ var (
 	globalConfig = &config.ConfigInfo{}
 	//配置信息
 	configInfo   = &config.ConfigInfo{}
+
+	//存放数据的消息队列
+	//todo 改成kafka消息队列实现
 	categoryChan = make(chan *Category, 10000)
 
 	//文章html的模板5

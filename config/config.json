@@ -143,6 +143,11 @@
       "data_srouce_url": "https://blog.csdn.net/leonpengweicn/article/details/32334137",
       "user_template": true,
       "template_type": "csdn"
+    },{
+      "data_source_name": "vincenshen博客园文章",
+      "data_srouce_url": "vincenshen",
+      "user_template": true,
+      "template_type": "blog"
     }
   ]
 }

@@ -58,7 +58,7 @@ func handleTimer(newConfig *config.ConfigInfo, timerType TimerType) {
 		c.Remove(entryId)
 		switch timerType {
 		case TimerType_wechat:
-			//todo
+			//todo 发送微信
 			return
 		case TimerType_watchConfig:
 			if newConfig.TimerConfig.NeedWatchConfig {
