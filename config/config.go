@@ -1,5 +1,5 @@
 package config
-
+//模板类型
 type TemplateType string
 
 const (
