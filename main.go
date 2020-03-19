@@ -37,8 +37,10 @@ var (
 
 	//存放数据的消息队列
 	//确保开启kafka和zookeeper
-	//todo 改成kafka消息队列实现
+	// 改成kafka消息队列实现
 	topic = "all_articles"
+	groupId = "group-1"
+
 
 	//文章html的模板5
 	category_template = `<h4><a href="%s">%s</a></h4>`
@@ -61,9 +63,9 @@ var (
 
 func init() {
 	//初始化kafka主题、消费者、生产者
-	createKafkaTopic("tcp", "127.0.0.1:9092", topic, 3, 3)
+	//createKafkaTopic("tcp", "localhost:9092", topic, 3, 3)
 	initKafkaProducter([]string{"localhost:9092"}, topic,true)
-	initKafkaConsumer([]string{"localhost:9092"}, "", topic)
+	initKafkaConsumer([]string{"localhost:9092"}, groupId, topic)
 
 	//注册数据源模板
 	registerDataSourceTemplate()

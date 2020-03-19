@@ -28,13 +28,13 @@ func initKafkaConsumer(brokers []string, groupId string, topic string) {
 }
 
 //initKafkaProducter 初始化kafka生产者
-func initKafkaProducter(brokers []string, topic string,async bool) {
+func initKafkaProducter(brokers []string, topic string, async bool) {
 	producter = kafka.NewWriter(kafka.WriterConfig{
 		Brokers: brokers,
 		Topic:   topic,
 		//默认轮询
 		Balancer: nil,
-		Async:async,
+		Async:    async,
 	})
 }
 
@@ -46,6 +46,14 @@ func createKafkaTopic(network string, address string,
 		logs.Error("the kafka DialContext error:%s", err.Error())
 		panic(err)
 	}
+	defer conn.Close()
+	//如果话题存在，删除话题
+	err = conn.DeleteTopics(topic)
+	if err != nil {
+		logs.Error("DeleteTopics occurs error:%v", err)
+	}
+
+	//创建话题
 	err = conn.CreateTopics(kafka.TopicConfig{
 		Topic:              topic,
 		NumPartitions:      numPartitions,
@@ -57,6 +65,7 @@ func createKafkaTopic(network string, address string,
 		logs.Error("kafka CreateTopics occurs error:%s", err.Error())
 		panic(err)
 	}
+
 }
 
 //sendMessage 发送消息

@@ -14,6 +14,7 @@ func addEmailTask(configInfo *config.ConfigInfo, ) {
 		//没有任务就阻塞
 		logs.Debug("now is ready to send go article list to your TimerType_email......")
 		if curCategory == nil || curPos >= len(curCategory.Articles) {
+			logs.Debug("begin fetch message from the kafka....")
 			//从管道取数据
 			//从消费者读取数据
 			msg, err := consumer.FetchMessage(ctx)
@@ -50,6 +51,7 @@ func addEmailTask(configInfo *config.ConfigInfo, ) {
 			Articles: articles[curPos : curPos+sendlen],
 		}
 		curPos = curPos + sendlen
+		logs.Debug("the send info:",sendCategory)
 		sendEmail(sendCategory)
 		logs.Debug("send go article list to your TimerType_email finish.........")
 	})
