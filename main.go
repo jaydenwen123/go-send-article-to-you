@@ -38,9 +38,8 @@ var (
 	//存放数据的消息队列
 	//确保开启kafka和zookeeper
 	// 改成kafka消息队列实现
-	topic = "all_articles"
+	topic   = "all_articles"
 	groupId = "group-1"
-
 
 	//文章html的模板5
 	category_template = `<h4><a href="%s">%s</a></h4>`
@@ -51,7 +50,6 @@ var (
 	c *cron.Cron
 	//维护定时任务的map
 	timerMap map[TimerType]cron.EntryID
-
 
 	//总文章数
 	articleCount  int
@@ -64,7 +62,7 @@ var (
 func init() {
 	//初始化kafka主题、消费者、生产者
 	//createKafkaTopic("tcp", "localhost:9092", topic, 3, 3)
-	initKafkaProducter([]string{"localhost:9092"}, topic,true)
+	initKafkaProducter([]string{"localhost:9092"}, topic, true)
 	initKafkaConsumer([]string{"localhost:9092"}, groupId, topic)
 
 	//注册数据源模板
@@ -170,21 +168,20 @@ func handleDataSource(item *config.DataSource) {
 		wg.Add(1)
 		go func(item *config.DataSource, category *Category, ) {
 			wg.Done()
-			ParseCategory(category, item)
-			util.Save2JsonFile(category, filepath.Join(dir, category.Title+".json"))
-			if len(category.Articles) > 0 {
-				e:= sendMessage(category)
-				if e != nil {
-					logs.Error("sendMessage error:%v", e)
-				}
+		ParseCategory(category, item)
+		util.Save2JsonFile(category, filepath.Join(dir, category.Title+".json"))
+		if len(category.Articles) > 0 {
+			e := sendMessage(category)
+			if e != nil {
+				logs.Error("sendMessage error:%v", e)
 			}
+		}
 		}(item, category)
 	}
 	wg.Wait()
 
 	logs.Debug("the all category articles is parsed finish....")
 }
-
 
 //loadCategoryInfoFromFile 从文件加载信息
 func loadCategoryInfoFromFile(dir string) {
@@ -206,7 +203,7 @@ func loadCategoryInfoFromFile(dir string) {
 			util.LoadObjectFromJsonFile(filepath.Join(dir, name), category)
 			aCount += len(category.Articles)
 			//生产数据
-			e:= sendMessage(category)
+			e := sendMessage(category)
 			if e != nil {
 				logs.Error("sendMessage error:%v", e)
 			}
