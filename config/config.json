@@ -149,10 +149,44 @@
       "user_template": true,
       "template_type": "blog"
     },{
-      "data_source_name": "aaaadong大佬的CSDN博客文章",
+      "data_source_name": "aaadong大佬的CSDN博客文章",
       "data_srouce_url": "https://blog.csdn.net/aaaadong/article/details/90485751",
       "user_template": true,
       "template_type": "csdn"
+    },{
+      "data_source_name": "qq_43901693大佬的CSDN博客文章",
+      "data_srouce_url": "https://blog.csdn.net/qq_43901693/article/details/103482804",
+      "user_template": true,
+      "template_type": "csdn"
+    },
+    {
+      "data_source_name": "goCN每日新闻",
+      "data_srouce_url": "https://gocn.vip/",
+      "category_selector": "#main > div.hide-ios > div > div > div:last-child  div.text a",
+      "page_count_selector": "#main > div > div.col-md-9 > div > div.card-footer.clearfix > ul > li:nth-last-child(2) > a",
+      "category_url_prefix": "https://gocn.vip",
+      "page_format": "?page=%d",
+      "is_topics": true,
+      "topic_config": {
+        "topic_block_selector": "#main > div > div.col-md-9 > div > div.card-body.item-list > div",
+        "topic_link_selector": "div.infos > div.title > a",
+        "topic_title_selector": "",
+        "topic_link_prefix": "https://gocn.vip",
+        "has_date": false,
+        "date_selector": "",
+        "has_author": true,
+        "author_selector": "div  div.infos > div.info > a"
+      },
+      "article_config": {
+        "article_block_selector": "#main > div > div.col-md-9 > div.topic-detail.card > div.card-body.markdown.markdown-toc > ol li",
+        "article_link_selector": "a",
+        "article_title_selector": ".",
+        "article_link_prefix": "",
+        "has_date": false,
+        "date_selector": "",
+        "has_author": false,
+        "author_selector": ""
+      }
     }
   ]
 }

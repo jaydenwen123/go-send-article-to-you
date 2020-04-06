@@ -30,8 +30,18 @@ var (
 	//全局的配置文件
 	globalConfig = &config.ConfigInfo{}
 	//配置信息
+<<<<<<< Updated upstream
 	configInfo   = &config.ConfigInfo{}
 	categoryChan = make(chan *Category, 10000)
+=======
+	configInfo = &config.ConfigInfo{}
+
+	//存放数据的消息队列
+	//确保开启kafka和zookeeper
+	// 改成kafka消息队列实现
+	topic   = "all_articles"
+	groupId = "group-1"
+>>>>>>> Stashed changes
 
 	//文章html的模板5
 	category_template = `<h4><a href="%s">%s</a></h4>`
@@ -52,6 +62,14 @@ var (
 )
 
 func init() {
+<<<<<<< Updated upstream
+=======
+	//初始化kafka主题、消费者、生产者
+	//createKafkaTopic("tcp", "localhost:9092", topic, 3, 3)
+	initKafkaProducter([]string{"localhost:9092"}, topic, true)
+	initKafkaConsumer([]string{"localhost:9092"}, groupId, topic)
+
+>>>>>>> Stashed changes
 	//注册数据源模板
 	registerDataSourceTemplate()
 	//开始定时器
@@ -155,12 +173,24 @@ func handleDataSource(item *config.DataSource, categoryChan chan *Category) {
 		wg.Add(1)
 		go func(item *config.DataSource, category *Category, cc chan *Category) {
 			wg.Done()
+<<<<<<< Updated upstream
 			ParseCategory(category, item)
 			util.Save2JsonFile(category, filepath.Join(dir, category.Title+".json"))
 			if len(category.Articles) > 0 {
 				cc <- category
 			}
 		}(item, category, categoryChan)
+=======
+		ParseCategory(category, item)
+		util.Save2JsonFile(category, filepath.Join(dir, category.Title+".json"))
+		if len(category.Articles) > 0 {
+			e := sendMessage(category)
+			if e != nil {
+				logs.Error("sendMessage error:%v", e)
+			}
+		}
+		}(item, category)
+>>>>>>> Stashed changes
 	}
 	wg.Wait()
 	logs.Debug("the all category articles is parsed finish....")
@@ -185,7 +215,15 @@ func loadCategoryInfoFromFile(dir string, categories chan *Category) {
 			}
 			util.LoadObjectFromJsonFile(filepath.Join(dir, name), category)
 			aCount += len(category.Articles)
+<<<<<<< Updated upstream
 			categoryChan <- category
+=======
+			//生产数据
+			e := sendMessage(category)
+			if e != nil {
+				logs.Error("sendMessage error:%v", e)
+			}
+>>>>>>> Stashed changes
 		}
 	}
 	categoryCount += cCount
