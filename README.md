@@ -27,30 +27,30 @@
 
 ### **项目已实现的功能：**  
 
-	* 数据源可配置
-	* 数据源支持模板
-	* 配置数据热更新
-	* 定时发送邮件
-	* 数据保存本地
-	* 已下载数据从本地读取
-	* 栏目->文章类型的网站数据收集
-	* 栏目->主题->文章类型的网站数据收集
-	* 启动、停止、重启、日志等自动化管理
+* 数据源可配置
+* 数据源支持模板
+* 配置数据热更新
+* 定时发送邮件
+* 数据保存本地
+* 已下载数据从本地读取
+* 栏目->文章类型的网站数据收集
+* 栏目->主题->文章类型的网站数据收集
+* 启动、停止、重启、日志等自动化管理
 
 
 ## 使用姿势
-	1.clone本仓库  
-	``` shell
-	git clone https://github.com/jaydenwen123/go-send-article-to-you.git
-	```
-	2.进入项目目录
-	``` shell
-	cd go-send-article-to-you
-	```   
-	3.执行启动脚本
-	``` shell
-	./start.sh
-	```   
+1.clone本仓库      
+``` shell
+   git clone https://github.com/jaydenwen123/go-send-article-to-you.git
+```
+2.进入项目目录
+``` shell
+cd go-send-article-to-you
+```   
+3.执行启动脚本
+``` shell
+./start.sh
+```   
 
 ## 配置参数说明
 ```json
@@ -96,24 +96,24 @@
 
 ### 主题配置参数说明
 1. **topic\_block\_selector:** 主题块选择器，也是对应的一个html元素列表
-2. **topic\_link\_selector:**主题块下面的单个主题超链接选择器(html a标签)，
-3. **topic\_title\_selector:**主题的标题选择器（如果有时则会采用该选择器获取文本作为标题）如果使用`.`则将单个主题块下的文本作为标题
-4. **topic\_link\_prefix:**主题的超链接的前缀，有些网站采用的是相对路径，此时需要指定该参数
+2. **topic\_link\_selector:** 主题块下面的单个主题超链接选择器(html a标签)，
+3. **topic\_title\_selector:** 主题的标题选择器（如果有时则会采用该选择器获取文本作为标题）如果使用`.`则将单个主题块下的文本作为标题
+4. **topic\_link\_prefix:** 主题的超链接的前缀，有些网站采用的是相对路径，此时需要指定该参数
 5. **has\_date:** 是否有日期信息，如果该参数为true，则需要指定`date_selector`日期选择器
-6. **date\_selector:**日期选择器，当`has_date`为true时指定该参数
-7. **has\_author:**是否有作者信息，当该值为true时，需要指定`author_selector`作者选择器
-8. **author\_selector:**作者选择器，当`has_author`为true时，指定该参数
+6. **date\_selector:** 日期选择器，当`has_date`为true时指定该参数
+7. **has\_author:** 是否有作者信息，当该值为true时，需要指定`author_selector`作者选择器
+8. **author\_selector:** 作者选择器，当`has_author`为true时，指定该参数
 
 
 ### 文章配置参数说明
 1. **article\_block\_selector:** 文章块选择器，也是对应的一个html元素列表
-2. **article\_link\_selector:**文章块下面的单个文章超链接选择器(html a标签)，
-3. **article\_title\_selector:**文章的标题选择器（如果有时则会采用该选择器获取文本作为标题）如果使用`.`则将单个文章块下的文本作为标题
-4. **article\_link\_prefix:**文章的超链接的前缀，有些网站采用的是相对路径，此时需要指定该参数
+2. **article\_link\_selector:** 文章块下面的单个文章超链接选择器(html a标签)，
+3. **article\_title\_selector:** 文章的标题选择器（如果有时则会采用该选择器获取文本作为标题）如果使用`.`则将单个文章块下的文本作为标题
+4. **article\_link\_prefix:** 文章的超链接的前缀，有些网站采用的是相对路径，此时需要指定该参数
 5. **has\_date:** 是否有日期信息，如果该参数为true，则需要指定`date_selector`日期选择器
-6. **date\_selector:**日期选择器，当`has_date`为true时指定该参数
-7. **has\_author:**是否有作者信息，当该值为true时，需要指定`author_selector`作者选择器
-8. **author\_selector:**作者选择器，当`has_author`为true时，指定该参数
+6. **date\_selector:** 日期选择器，当`has_date`为true时指定该参数
+7. **has\_author:** 是否有作者信息，当该值为true时，需要指定`author_selector`作者选择器
+8. **author\_selector:** 作者选择器，当`has_author`为true时，指定该参数
 
 ## 模板说明
 > 为了减轻配置或操作，本项目支持数据源配置模板的功能，用户只需简单的配置几个参数，就可以收集指定网站的文章内容
@@ -123,18 +123,20 @@
 2. **CSDN模板**
 3. **博客园模板**
 
+> 支持插件式自定义模板
+
 ### 模板使用说明
 > 使用模板时需要注意以下事项   
 > 1. user_template参数设置为true  
 > 2. template_type参数可选值为：指定值，详细参数取值如下  
 
 ```go
-	//csdn模板
-	TemplateType_CSDN TemplateType = "csdn"
-	//blog模板
-	TemplateType_BLOG TemplateType = "blog"
-	//go语言中文网模板
-	TemplateType_GOWEB TemplateType = "go_web"
+//csdn模板
+TemplateType_CSDN TemplateType = "csdn"
+//blog模板
+TemplateType_BLOG TemplateType = "blog"
+//go语言中文网模板
+TemplateType_GOWEB TemplateType = "go_web"
 ```
 
 > 3. 采用blog模板时，data_srouce_url只需要指定用户名即可
@@ -145,27 +147,27 @@
  
 ``` json
 
-	//blog模板
-	{
-      "data_source_name": "大佬liang1101博客",
-      "data_srouce_url": "liang1101",
-      "user_template": true,
-      "template_type": "blog"
-	},
-	//csdn模板
-	{
-      "data_source_name": "xxx CSDN博客",
-      "data_srouce_url": "https://blog.csdn.net/jacksonary/article/details/82892224",
-      "user_template": true,
-      "template_type": "csdn"
-   },
-   //go中文网模板
-   {
-      "data_source_name": "Go专栏教程文章",
-      "data_srouce_url": "https://studygolang.com/?tab=subject",
-      "user_template": true,
-      "template_type": "go_web"
-    }
+//blog模板
+{
+  "data_source_name": "大佬liang1101博客",
+  "data_srouce_url": "liang1101",
+  "user_template": true,
+  "template_type": "blog"
+},
+//csdn模板
+{
+  "data_source_name": "xxx CSDN博客",
+  "data_srouce_url": "https://blog.csdn.net/jacksonary/article/details/82892224",
+  "user_template": true,
+  "template_type": "csdn"
+},
+//go中文网模板
+{
+  "data_source_name": "Go专栏教程文章",
+  "data_srouce_url": "https://studygolang.com/?tab=subject",
+  "user_template": true,
+  "template_type": "go_web"
+}
     
 ```
 
