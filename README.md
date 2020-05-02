@@ -173,3 +173,219 @@ TemplateType_GOWEB TemplateType = "go_web"
 
 `user_template:`:使用模板   
 `template_type:`:模板类型   
+
+##新增功能
+**将文章数据导入到elasticsearch中，根据文章标题、栏目标题关键词来检索文章**
+### 特色点
+**1. 通过中文分词(ik_max_word)，方便根据标题关键字检索**  
+**2. 所有文章存储es，方便快速查看和检索**  
+
+####根据标题关键词搜索数据
+**1.kibana搜索**  
+
+``` json
+#获取数据
+GET http://localhost:9200/all_articles/_search
+{
+  "query": {
+    "match": {
+      "title": "使用"
+    }
+  },
+  "highlight": {
+    "fields": {
+      "title": {
+        "pre_tags": "<hello>",
+        "post_tags": "</hello>"
+      }
+    }
+  }
+}
+```
+
+**2.curl命令**  
+
+``` shell
+curl -XGET "http://localhost:9200/all_articles/_search" -H 'Content-Type: application/json' -d'{  "query": {    "match": {      "title": "使用"    }  },  "highlight": {    "fields": {      "title": {        "pre_tags": "<hello>",        "post_tags": "</hello>"      }    }  }}'
+```
+
+**3.结果**
+![检索数据](imgs/analysis_result.jpg)
+
+
+####安装中文分词插件
+**中文分词插件：ik\_max\_word、smartcn**
+> 0.安装 sh elasticsearch-plugin install analysis-smartcn(安装第一种)  
+> 1.下载 https://github.com/medcl/elasticsearch-analysis-ik/releases(安装第二种)   
+> 2.安装 解压安装到plugins⽬目录  
+> 3.检验  
+> 4.安装后重新启动  
+> 5.测试分词    
+
+``` json
+POST localhost:9200/_analyze {
+"analyzer": "ik_max_word", "text": "我是中国人"
+}
+```
+
+####重建索引 
+
+
+
+``` json
+
+#为旧索引设置别名
+POST _aliases
+{
+  "actions": [
+    {
+      "add": {
+        "index": "articles",
+        "alias": "my_articles"
+      }
+    }
+  ]
+}
+#测试分词
+GET /articles/_analyze
+{
+  "field": "title",
+  "text": "我是中国人"
+}
+
+#测试分词
+GET /_analyze
+{
+  "text": "我是中国人",
+  "analyzer": "smartcn"
+}
+
+#测试分词
+GET /_analyze
+{
+  "text": "我是中国人",
+  "analyzer": "ik_max_word"
+}
+
+
+GET /articles
+
+GET /articles/_alias
+
+#重新建立索引和mapping
+PUT /all_articles
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "chinese_analyzer": {
+          "type": "ik_max_word"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "author": {
+        "type": "keyword"
+      },
+      "category_title": {
+        "type": "text",
+        "analyzer": "chinese_analyzer"
+      },
+      "publish_date": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "text",
+        "analyzer": "chinese_analyzer"
+      },
+      "url": {
+        "type": "keyword"
+      }
+    }
+  }
+}
+
+#从旧索引拷贝数据到新索引
+POST /_reindex
+{
+  "source": {
+    "index": "articles"
+  },
+  "dest": {
+    "index": "all_articles"
+  }
+  
+}
+
+
+
+GET /all_articles
+
+GET /my_articles
+
+
+#删除旧别名，并未新索引设置别名
+POST _aliases
+{
+  "actions": [
+    {
+      "add": {
+        "index": "all_articles",
+        "alias": "my_articles"
+      }
+    },
+    {
+      "remove": {
+        "index": "articles",
+        "alias": "my_articles"
+      }
+    }
+  ]
+}
+
+#删除旧索引
+DELETE articles
+
+GET /articles/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+#测试旧索引分词
+GET /articles/_analyze
+{
+  "text": "Django框架中logging的使用",
+  "field": "title"
+}
+
+#测试新索引分词
+GET /all_articles/_analyze
+{
+  "text": "Django框架中logging的使用",
+  "field": "title"
+}
+
+
+#获取数据
+GET /all_articles/_search
+{
+  "query": {
+    "match": {
+      "title": "使用"
+    }
+  },
+  "highlight": {
+    "fields": {
+      "title": {
+        "pre_tags": "<hello>",
+        "post_tags": "</hello>"
+      }
+    }
+  }
+}
+
+```
