@@ -158,6 +158,11 @@
       "data_srouce_url": "https://blog.csdn.net/qq_43901693/article/details/103482804",
       "user_template": true,
       "template_type": "csdn"
+    },{
+      "data_source_name": "skh2015java大佬的CSDN博客文章",
+      "data_srouce_url": "https://blog.csdn.net/skh2015java/article/details/56846413",
+      "user_template": true,
+      "template_type": "csdn"
     },
     {
       "data_source_name": "goCN每日新闻",

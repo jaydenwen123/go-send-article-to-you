@@ -11,13 +11,25 @@ import (
 //消费者
 var consumer *kafka.Reader
 
+var esConsumer *kafka.Reader
+
 //生产者
 var producter *kafka.Writer
 
 //话题
 //initKafkaConsumer 初始化kafka消费者
 func initKafkaConsumer(brokers []string, groupId string, topic string) {
-	consumer = kafka.NewReader(kafka.ReaderConfig{
+	//consumer = initConsumer(brokers, groupId, topic)
+	consumer = initConsumer(brokers, groupId, topic)
+}
+
+//初始化写es数据的消费者
+func initEsKafkaConsumer(brokers []string, groupId string, topic string) {
+	esConsumer = initConsumer(brokers, groupId, topic)
+}
+
+func initConsumer(brokers []string, groupId string, topic string) *kafka.Reader {
+	return kafka.NewReader(kafka.ReaderConfig{
 		Brokers:   brokers,
 		GroupID:   groupId,
 		Topic:     topic,

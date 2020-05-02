@@ -216,7 +216,7 @@ func getweather(city string) (string, string, string, string) {
 	day := gjson.Get(thisday, "day").Str
 	wea := gjson.Get(thisday, "wea").Str
 	tem := gjson.Get(thisday, "tem").Str
-	//tem2 := gjson.Get(thisday, "tem2").Str
+	//tem2 := gjson.GetIndex(thisday, "tem2").Str
 	air_tips := gjson.Get(thisday, "air_tips").Str
 	return day, wea, tem, air_tips
 }

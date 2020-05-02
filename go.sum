@@ -34,8 +34,10 @@ github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db/go.mod h1:/XxbfmMg8l
 github.com/golang/snappy v0.0.1/go.mod h1:/XxbfmMg8lxefKM7IXC3fBNl/7bRcc72aCRzEWrmP2Q=
 github.com/gomodule/redigo v2.0.0+incompatible/go.mod h1:B4C85qUVwatsJoIUNIfCRsp7qO0iAmpGFZ4EELWSbC4=
 github.com/google/gofuzz v1.0.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/M65Eg=
-github.com/jaydenwen123/go-util v0.0.0-20200311074941-e85040eee5e9 h1:BHmCs6LemFBVcL+8TUOpvfG5cExqmwjGAYmuA/AH+AU=
-github.com/jaydenwen123/go-util v0.0.0-20200311074941-e85040eee5e9/go.mod h1:wNsZOEyjd+yEHUyt+TNykk7YQgMpdTNDuFP1lDCzFis=
+github.com/jaydenwen123/go-es-client v0.0.0-20200502064932-349197845753 h1:CFDxt2LZ6vT4QznDo+cC3VpbrbAy9ShihdDQC4XWvHA=
+github.com/jaydenwen123/go-es-client v0.0.0-20200502064932-349197845753/go.mod h1:LZk2QK8BdgCRmjCaeLDZmY6SxQo5llo49wcPWclVfM8=
+github.com/jaydenwen123/go-util v0.0.0-20200430081717-42ab7f0df39f h1:bOCvRNKe3uUF8zCZA/b2iqQRqEcuD09Z7OkspgdzP9o=
+github.com/jaydenwen123/go-util v0.0.0-20200430081717-42ab7f0df39f/go.mod h1:wNsZOEyjd+yEHUyt+TNykk7YQgMpdTNDuFP1lDCzFis=
 github.com/jaydenwen123/html2text v0.0.0-20190607033137-e5caaf7b0c5b h1:f2DUmliR+W3KKJ4esaxuF2OrlwpOXKcYe/zkZToogv8=
 github.com/jaydenwen123/html2text v0.0.0-20190607033137-e5caaf7b0c5b/go.mod h1:CaPa+zXknK11ZuAaC/vM9f/6zSd/8jPxZjoYiTR4dZw=
 github.com/jinzhu/gorm v1.9.12 h1:Drgk1clyWT9t9ERbzHza6Mj/8FY/CqMyVzOiHviMo6Q=
