@@ -20,16 +20,7 @@ var producter *kafka.Writer
 //initKafkaConsumer 初始化kafka消费者
 func initKafkaConsumer(brokers []string, groupId string, topic string) {
 	//consumer = initConsumer(brokers, groupId, topic)
-	consumer = initConsumer(brokers, groupId, topic)
-}
-
-//初始化写es数据的消费者
-func initEsKafkaConsumer(brokers []string, groupId string, topic string) {
-	esConsumer = initConsumer(brokers, groupId, topic)
-}
-
-func initConsumer(brokers []string, groupId string, topic string) *kafka.Reader {
-	return kafka.NewReader(kafka.ReaderConfig{
+	consumer = kafka.NewReader(kafka.ReaderConfig{
 		Brokers:   brokers,
 		GroupID:   groupId,
 		Topic:     topic,
@@ -38,6 +29,30 @@ func initConsumer(brokers []string, groupId string, topic string) *kafka.Reader 
 		MaxBytes:  10e6,
 	})
 }
+
+//初始化写es数据的消费者
+func initEsKafkaConsumer(brokers []string, groupId string, topic string) {
+	//esConsumer = initConsumer(brokers, groupId, topic)
+	esConsumer = kafka.NewReader(kafka.ReaderConfig{
+		Brokers:   brokers,
+		GroupID:   groupId,
+		Topic:     topic,
+		Partition: 0,
+		MinBytes:  10e3,
+		MaxBytes:  10e6,
+	})
+}
+//
+//func initConsumer(brokers []string, groupId string, topic string) *kafka.Reader {
+//	return kafka.NewReader(kafka.ReaderConfig{
+//		Brokers:   brokers,
+//		GroupID:   groupId,
+//		Topic:     topic,
+//		Partition: 0,
+//		MinBytes:  10e3,
+//		MaxBytes:  10e6,
+//	})
+//}
 
 //initKafkaProducter 初始化kafka生产者
 func initKafkaProducter(brokers []string, topic string, async bool) {

@@ -12,6 +12,7 @@ echo "=======zookeeper and kafka pids:"$pids
 kill -9 $pids
 echo "=======finish stop zookeeper and kafka...."
 bash /Users/wenxiaofei/learn-kafka/start_kafka_clusters.sh
+sleep 5
 echo "=======finish restart zookeeper and kafka...."
 echo "=======begin restart the program <go-send-article-to-you>"
 ./restart.sh

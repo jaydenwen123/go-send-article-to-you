@@ -2,11 +2,12 @@ package main
 
 import (
 	"context"
+	"time"
+
 	"github.com/astaxie/beego/logs"
 	elastic "github.com/jaydenwen123/go-es-client"
 	"github.com/jaydenwen123/go-es-client/api"
 	jsoniter "github.com/json-iterator/go"
-	"time"
 )
 
 //所有的信息写入到es中
@@ -14,7 +15,8 @@ import (
 //initESIndex 初始化es索引
 
 const (
-	index   = "articles"
+	//index = "articles"
+	index = "all_articles"
 	//todo 此处的mapping 的text类型未设置分词，采用的默认分词，后面可以设置中文分词采用[ik_max_word 或者 smartcn]，重建索引
 	mapping = `{
   "mappings": {
@@ -108,17 +110,35 @@ func consumerKafkaData2Es() {
 			logs.Error("jsoniter.Unmarshal message occurs error:%s", err.Error())
 			return
 		}
-		for _, ar := range category.Articles {
-			article := &EsArticle{
-				Title:         ar.Title,
-				URL:           ar.Url,
-				Author:        ar.Author,
-				PublishDate:   ar.PublishDate,
-				CategoryTitle: category.Title,
-				CategoryURL:   category.LinkHref,
+		if category.IsTopic {
+			for _, t := range category.Topics {
+				for _, ar := range t.Articles {
+					topicInfo := t.TopicInfo
+					article := &EsArticle{
+						Title:         ar.Title,
+						URL:           ar.Url,
+						Author:        topicInfo.Author,
+						PublishDate:   topicInfo.PublishDate,
+						CategoryTitle: topicInfo.Title,
+						CategoryURL:   topicInfo.Url,
+					}
+					saveArticleToEs(article)
+					time.Sleep(10 * time.Millisecond)
+				}
 			}
-			saveArticleToEs(article)
-			time.Sleep(10 * time.Millisecond)
+		} else {
+			for _, ar := range category.Articles {
+				article := &EsArticle{
+					Title:         ar.Title,
+					URL:           ar.Url,
+					Author:        ar.Author,
+					PublishDate:   ar.PublishDate,
+					CategoryTitle: category.Title,
+					CategoryURL:   category.LinkHref,
+				}
+				saveArticleToEs(article)
+				time.Sleep(10 * time.Millisecond)
+			}
 		}
 		logs.Debug("============write article into es.count:<%d>", len(category.Articles))
 		time.Sleep(3 * time.Second)
